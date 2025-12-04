@@ -5,19 +5,19 @@ const currencySchema = new mongoose.Schema(
     code: { 
         type: String, 
         required: true, 
-        unique: true 
+        unique: true,
     },
     label: { 
         type: String, 
-        required: true 
+        required: true,
     },
     rateToBase: { 
         type: Number, 
-        required: true 
+        required: true,
     },
     isActive: { 
         type: Boolean, 
-        default: true 
+        default: true,
     },
   },
   { timestamps: true }
