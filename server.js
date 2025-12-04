@@ -9,6 +9,10 @@ const currencyRouter = require('./routers/currencyRoutes.js')
 
 connectDB();
 
+app.use(cors());
+app.use(express.json());
+app.use(logger('dev'));
+
 app.use('/currencies', currencyRouter);
 
 const PORT = process.env.PORT || 3000;
