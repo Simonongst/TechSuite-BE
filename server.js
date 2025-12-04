@@ -5,8 +5,11 @@ const cors = require("cors");
 const logger = require("morgan");
 
 const connectDB = require("./db/db.js")
+const currencyRouter = require('./routers/currencyRoutes.js')
 
 connectDB();
+
+app.use('/currencies', currencyRouter);
 
 const PORT = process.env.PORT || 3000;
 
