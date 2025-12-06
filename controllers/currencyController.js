@@ -40,7 +40,32 @@ const createCurrency = async (req, res) => {
   }
 };
 
+const updateCurrency = async (req, res) => {
+  try {
+    const updatedCurrency = await Currency.findByIdAndUpdate(
+      req.params.currencyId,
+      req.body,
+      { new: true }
+    );
+
+    if (!updatedCurrency) {
+        return res.status(404).json({
+            success: false,
+            message: 'Currency not found.',
+        })
+    }
+
+    res.status(200).json({ success: true, data: updatedCurrency});
+  } catch (err) {
+    res.status(500).json({ 
+        success: false,
+        error: err.message,
+    });
+  }
+};
+
 module.exports = {
   getAllCurrency,
   createCurrency,
+  updateCurrency,
 };
