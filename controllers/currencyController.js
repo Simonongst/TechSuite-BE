@@ -49,17 +49,44 @@ const updateCurrency = async (req, res) => {
     );
 
     if (!updatedCurrency) {
-        return res.status(404).json({
-            success: false,
-            message: 'Currency not found.',
-        })
+      return res.status(404).json({
+        success: false,
+        message: 'Currency not found.',
+      });
     }
 
-    res.status(200).json({ success: true, data: updatedCurrency});
+    res.status(200).json({ success: true, data: updatedCurrency });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+  }
+};
+
+// Soft delete
+
+const deleteCurrency = async (req, res) => {
+  try {
+    const deletedCurrency = await Currency.findById(
+      req.params.currencyId
+    );
+
+    if (!deletedCurrency) {
+      return res.status(404).json({
+        success: false,
+        message: 'Currency not found.',
+      });
+    }
+
+    deletedCurrency.isActive = false;
+    await deletedCurrency.save();
+
+    res.status(200).json({ success: true, data: deletedCurrency });
   } catch (err) {
     res.status(500).json({ 
         success: false,
-        error: err.message,
+        err: err.message,
     });
   }
 };
@@ -68,4 +95,5 @@ module.exports = {
   getAllCurrency,
   createCurrency,
   updateCurrency,
+  deleteCurrency,
 };
