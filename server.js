@@ -4,8 +4,9 @@ const app = express();
 const cors = require("cors");
 const logger = require("morgan");
 
-const connectDB = require("./db/db.js")
-const currencyRouter = require('./routers/currencyRoutes.js')
+const connectDB = require("./db/db.js");
+const currencyRouter = require('./routers/currencyRoutes.js');
+const equipmentRouter = require('./routers/equipmentRoutes.js');
 
 connectDB();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(logger('dev'));
 
 app.use('/currencies', currencyRouter);
+app.use('/equipment', equipmentRouter);
 
 const PORT = process.env.PORT || 3000;
 
