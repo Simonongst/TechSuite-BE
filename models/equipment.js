@@ -6,17 +6,13 @@ const equipmentSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: [
-        'desktop',
-        'laptop',
-        'monitor',
-        'desk_phone',
-        'network_switch',
-        'ethernet_cable',
+        'Desktop',
+        'Laptop',
+        'Monitor',
+        'Desk Phone',
+        'Network Switch',
+        'Ethernet Cable',
       ],
-    },
-    label: {
-      type: String,
-      required: true,
     },
     unitCost: {
       type: Number,
@@ -28,6 +24,10 @@ const equipmentSchema = new mongoose.Schema(
       ref: 'Currency',
       required: true,
     },
+    isActive: { 
+        type: Boolean, 
+        default: true,
+    },    
   },
   { timestamps: true }
 );
