@@ -9,5 +9,4 @@ router.post('/', createCurrency);
 router.put('/:currencyId', updateCurrency);
 router.delete('/:currencyId', deleteCurrency);
 
-
 module.exports = router;
