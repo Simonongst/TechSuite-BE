@@ -79,6 +79,13 @@ const deleteCurrency = async (req, res) => {
       });
     }
 
+    if (deletedCurrency.code === 'USD') {
+        return res.status(400).json({
+            success: false,
+            message: 'USD cannot be deleted.',
+        });
+    }
+
     deletedCurrency.isActive = false;
     await deletedCurrency.save();
 
