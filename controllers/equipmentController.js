@@ -1,8 +1,8 @@
-const Equipment = require("../models/equipment")
+const Equipment = require('../models/equipment');
 
 const getAllEquipment = async (req, res) => {
   try {
-    const equipment = await Equipment.find({});
+    const equipment = await Equipment.find({}).populate('currency', 'code');
     res.status(200).json(equipment);
   } catch (err) {
     res.status(500).json({ err: err.message });
@@ -42,6 +42,21 @@ const createEquipment = async (req, res) => {
 
 const updateEquipment = async (req, res) => {
   try {
+    const { type } = req.body;
+
+    if (type) {
+      const typeExists = await Equipment.findOne({
+        type,
+        _id: { $ne: req.params.equipmentId },
+      });
+      if (typeExists) {
+        return res.status(400).json({
+          success: false,
+          message: 'Same equipment type already exists.',
+        });
+      }
+    }
+
     const updatedEquipment = await Equipment.findByIdAndUpdate(
       req.params.equipmentId,
       req.body,
@@ -66,9 +81,7 @@ const updateEquipment = async (req, res) => {
 
 const deleteEquipment = async (req, res) => {
   try {
-    const deletedEquipment = await Equipment.findById(
-      req.params.equipmentId
-    );
+    const deletedEquipment = await Equipment.findById(req.params.equipmentId);
 
     if (!deletedEquipment) {
       return res.status(404).json({
@@ -82,9 +95,9 @@ const deleteEquipment = async (req, res) => {
 
     res.status(200).json({ success: true, data: deletedEquipment });
   } catch (err) {
-    res.status(500).json({ 
-        success: false,
-        err: err.message,
+    res.status(500).json({
+      success: false,
+      err: err.message,
     });
   }
 };
