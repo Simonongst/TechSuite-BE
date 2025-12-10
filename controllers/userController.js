@@ -60,8 +60,65 @@ const createUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const { eid, email, password, ...rest } = req.body;
+
+    if (eid) {
+      const eidExists = await User.findOne({
+        eid,
+        _id: { $ne: req.params.userId },
+      });
+      if (eidExists) {
+        return res.json({
+          success: false,
+          message: 'EID already exists.',
+        });
+      }
+    }
+
+    if (email) {
+      const emailExists = await User.findOne({
+        email,
+        _id: { $ne: req.params.userId },
+      });
+      if (emailExists) {
+        return res.json({
+          success: false,
+          message: 'Email already exists.',
+        });
+      }
+    }
+
+    let hashedPassword;
+    if (password) {
+      hashedPassword = bcrypt.hashSync(password, 10);
+    }
+
+    const updatedPayload = {
+      ...rest,
+      ...(eid && { eid }),
+      ...(email && { email }),
+      ...(hashedPassword && { password: hashedPassword }),
+    };
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.userId,
+      updatedPayload,
+      { new: true }
+    );
+
+    const { password: _, ...userWithoutPassword } = updatedUser.toObject();
+
+    res.status(200).json(userWithoutPassword);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
   createUser,
+  updateUser,
 };
