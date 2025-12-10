@@ -5,6 +5,7 @@ const cors = require("cors");
 const logger = require("morgan");
 
 const connectDB = require("./db/db.js");
+const userRouter = require('./routers/userRoutes.js')
 const currencyRouter = require('./routers/currencyRoutes.js');
 const equipmentRouter = require('./routers/equipmentRoutes.js');
 
@@ -16,6 +17,7 @@ app.use(logger('dev'));
 
 app.use('/currencies', currencyRouter);
 app.use('/equipment', equipmentRouter);
+app.use('/users', userRouter);
 
 const PORT = process.env.PORT || 3000;
 
