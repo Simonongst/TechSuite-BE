@@ -5,7 +5,8 @@ const cors = require("cors");
 const logger = require("morgan");
 
 const connectDB = require("./db/db.js");
-const userRouter = require('./routers/userRoutes.js')
+const authRouter = require('./routers/authRoutes.js');
+const userRouter = require('./routers/userRoutes.js');
 const currencyRouter = require('./routers/currencyRoutes.js');
 const equipmentRouter = require('./routers/equipmentRoutes.js');
 
@@ -15,6 +16,7 @@ app.use(cors());
 app.use(express.json());
 app.use(logger('dev'));
 
+app.use('/auth', authRouter);
 app.use('/currencies', currencyRouter);
 app.use('/equipment', equipmentRouter);
 app.use('/users', userRouter);
