@@ -1,4 +1,6 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { v4: uuidv4 } = require('uuid');
 const User = require('../models/user.js');
 
 const signUp = async (req, res) => {
@@ -22,6 +24,49 @@ const signUp = async (req, res) => {
   }
 };
 
+const signIn = async (req, res) => {
+  try {
+    const userInDatabase = await User.findOne({ eid: req.body.eid });
+    if (!userInDatabase) {
+      return res
+        .status(401)
+        .send('Sign-in failed. Invalid Enterprise ID or Password.');
+    }
+
+    const validPassword = bcrypt.compareSync(
+      req.body.password,
+      userInDatabase.password
+    );
+    if (!validPassword) {
+      return res
+        .status(401)
+        .send('Login failed. Invalid Enterprise ID or Password.');
+    }
+
+    const claims = {
+      _id: userInDatabase._id.toString(),
+      username: userInDatabase.username,
+      eid: userInDatabase.eid,
+      role: userInDatabase.role,
+    };
+
+    const access = jwt.sign(claims, process.env.ACCESS_SECRET, {
+      expiresIn: '1d',
+      jwtid: uuidv4(),
+    });
+
+    const refresh = jwt.sign(claims, process.env.REFRESH_SECRET, {
+      expiresIn: '30d',
+      jwtid: uuidv4(),
+    });
+
+    res.status(200).json({ access, refresh });
+  } catch (err) {
+    res.status(500).redirect('/');
+  }
+};
+
 module.exports = {
   signUp,
+  signIn,
 };
