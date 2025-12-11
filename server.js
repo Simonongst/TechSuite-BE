@@ -9,6 +9,7 @@ const authRouter = require('./routers/authRoutes.js');
 const userRouter = require('./routers/userRoutes.js');
 const currencyRouter = require('./routers/currencyRoutes.js');
 const equipmentRouter = require('./routers/equipmentRoutes.js');
+const verifyToken = require('./middleware/verifyToken.js');
 
 connectDB();
 
