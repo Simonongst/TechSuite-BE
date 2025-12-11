@@ -17,6 +17,7 @@ app.use(express.json());
 app.use(logger('dev'));
 
 app.use('/auth', authRouter);
+app.use(verifyToken);
 app.use('/currencies', currencyRouter);
 app.use('/equipment', equipmentRouter);
 app.use('/users', userRouter);
