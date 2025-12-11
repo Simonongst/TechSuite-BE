@@ -87,7 +87,33 @@ const changePassword = async (req, res) => {
   res.json({ success: true, message: 'Password successfully updated.' });
 };
 
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user)
+    return res.json({
+      message: 'If the account exists, an email will be sent to you.',
+    });
+
+  const token = jwt.sign({ userId: user._id }, process.env.RESET_SECRET, {
+    expiresIn: '15m',
+  });
+
+  const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+
+  await transporter.sendMail({
+    to: user.email,
+    subject: 'Reset your password',
+    text: ResetPassword.text(resetUrl),
+    html: ResetPassword.html(resetUrl)
+  });
+
+  res.json({ message: 'Check your email for reset instructions.' });
+};
+
 module.exports = {
   signUp,
   signIn,
+  changePassword,
+  forgotPassword,
 };
