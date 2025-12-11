@@ -26,10 +26,10 @@ const userSchema = new mongoose.Schema({
         enum: ["User", "Editor", "Admin"],
         default: "User",
     },
-    isEmployed: {
+    isAPIT: {
         type: Boolean,
         required: true,
-        default: true,
+        default: false,
     },
 });
 
