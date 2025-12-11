@@ -66,6 +66,15 @@ const signIn = async (req, res) => {
   }
 };
 
+const signOut = async (req, res) => {
+  try {
+    console.log('sign-out request received');
+    res.status(200).json({ message: 'Sign-out successful.' });
+  } catch (err) {
+    res.status(500).send({ err: err.message });
+  }
+};
+
 const changePassword = async (req, res) => {
   const { oldPassword, newPassword, confirmPassword } = req.body;
 
@@ -114,6 +123,7 @@ const forgotPassword = async (req, res) => {
 module.exports = {
   signUp,
   signIn,
+  signOut,
   changePassword,
   forgotPassword,
 };
