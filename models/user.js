@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         required: true,
-        enum: ["User", "Editor", "Admin"],
+        enum: ["User", "Editor", "Reviewer", "Admin"],
         default: "User",
     },
     isAPIT: {
