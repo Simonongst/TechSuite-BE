@@ -35,7 +35,32 @@ const createRecord = async (req, res) => {
   }
 };
 
+const updateRecord = async (req, res) => {
+  try {
+    const updatedRecord = await Record.findByIdAndUpdate(
+      req.params.recordId,
+      req.body,
+      { new: true }
+    );
+
+    if (!updatedRecord) {
+      return res.status(404).json({
+        success: false,
+        message: 'Record not found.',
+      });
+    }
+
+    res.status(200).json({ success: true, data: updatedRecord });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+  }
+};
+
 module.exports = {
   getAllRecord,
   createRecord,
+  updateRecord,
 };
