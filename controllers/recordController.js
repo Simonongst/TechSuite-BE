@@ -59,8 +59,19 @@ const updateRecord = async (req, res) => {
   }
 };
 
+const deleteRecord = async (req, res) => {
+  try {
+    const deletedRecord = await Record.findByIdAndDelete(req.params.recordId);
+
+    res.status(200).json(deletedRecord);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+};
+
 module.exports = {
   getAllRecord,
   createRecord,
   updateRecord,
+  deleteRecord,
 };
