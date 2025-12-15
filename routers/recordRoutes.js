@@ -7,6 +7,6 @@ const { getAllRecord, createRecord, updateRecord, deleteRecord } = recordControl
 router.get('/', getAllRecord);
 router.post('/', createRecord);
 router.put('/recordId', updateRecord);
-router.put('/recordId', deleteRecord);
+router.delete('/recordId', deleteRecord);
 
 module.exports = router;
