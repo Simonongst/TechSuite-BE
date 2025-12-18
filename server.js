@@ -10,6 +10,7 @@ const userRouter = require('./routers/userRoutes.js');
 const currencyRouter = require('./routers/currencyRoutes.js');
 const equipmentRouter = require('./routers/equipmentRoutes.js');
 const recordRouter = require('./routers/recordRoutes.js');
+const auditRouter = require('./routers/auditRoutes.js')
 const verifyToken = require('./middleware/verifyToken.js');
 
 connectDB();
@@ -23,7 +24,8 @@ app.use(verifyToken);
 app.use('/currencies', currencyRouter);
 app.use('/equipment', equipmentRouter);
 app.use('/users', userRouter);
-app.use('/records', recordRouter)
+app.use('/records', recordRouter);
+app.use('/audits', auditRouter);
 
 const PORT = process.env.PORT || 3000;
 
