@@ -12,6 +12,33 @@ const getAllAudits = async (req, res) => {
   }
 };
 
+const createAudit = async (req, res) => {
+  try {
+    const { userId, category, label, date, isComplete } = req.body;
+    if (!userId || !category || !label) {
+      return res.status(400).json({
+        success: false,
+        message: 'userId, category and label are required.',
+      });
+    }
+    const newAudit = new Audit({
+      userId,
+      category,
+      label,
+      date: date || new Date(),
+      isComplete: isComplete ?? true,
+    });
+    const savedAudit = await newAudit.save();
+    res.status(201).json({ success: true, data: savedAudit });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+  }
+};
+
 module.exports = {
   getAllAudits,
+  createAudit,
 };
