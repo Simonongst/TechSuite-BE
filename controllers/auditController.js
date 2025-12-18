@@ -38,7 +38,26 @@ const createAudit = async (req, res) => {
   }
 };
 
+const deleteAudit = async (req, res) => {
+  try {
+    const deletedAudit = await Audit.findByIdAndDelete(req.params.auditId);
+    if (!deletedAudit) {
+      return res.status(404).json({
+        success: false,
+        message: 'Audit not found.',
+      });
+    }
+    res.status(200).json({ success: true, data: deletedAudit });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      err: err.message,
+    });
+  }
+};
+
 module.exports = {
   getAllAudits,
   createAudit,
+  deleteAudit,
 };
