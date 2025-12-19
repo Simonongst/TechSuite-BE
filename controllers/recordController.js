@@ -3,7 +3,7 @@ const Record = require('../models/record');
 const getAllRecord = async (req, res) => {
   try {
     const records = await Record.find({ userId: req.user._id }).sort({
-      createdAt: -1,
+      updatedAt: -1,
     });
     res.status(200).json({ success: true, records });
   } catch (err) {
